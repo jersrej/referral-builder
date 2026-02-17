@@ -81,7 +81,7 @@ const ReferralsTable = () => {
       <ConfirmDialog
         open={!!selectedId}
         title="Delete referral"
-        description="This action cannot be undone."
+        description="Are you sure you want to delete this referral? This action cannot be undone."
         loading={isPending}
         onClose={() => setSelectedId(null)}
         onConfirm={async () => {

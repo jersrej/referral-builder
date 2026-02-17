@@ -10,8 +10,8 @@ export const referralSchema = z.object({
   street: z.string().min(1, 'Street is required'),
   suburb: z.string().min(1, 'Suburb is required'),
   state: z.string().min(1, 'State is required'),
-  postcode: z.string().min(1),
-  country: z.string().min(1),
+  postcode: z.string().min(1, 'Postcode is required'),
+  country: z.string().min(1, 'Country is required'),
   avatar: z.any().optional(),
   avatarUrl: z.string().nullable().optional()
 });
