@@ -41,7 +41,7 @@ const ConfirmDialog = ({
       }
     >
       <div className="flex gap-4 items-start">
-        <div className="flex-shrink-0 w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+        <div className="shrink-0 w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
           <AlertTriangle className="text-red-600" size={20} />
         </div>
         <div className="flex-1 pt-1">
