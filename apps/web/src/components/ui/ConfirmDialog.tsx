@@ -30,8 +30,8 @@ const ConfirmDialog = ({
       title={title}
       size="sm"
       footer={
-        <div className="flex justify-end gap-2">
-          <Button variant="ghost" onClick={onClose}>
+        <div className="flex justify-end gap-3">
+          <Button variant="outline" onClick={onClose} disabled={loading}>
             {cancelText}
           </Button>
           <Button variant="danger" loading={loading} onClick={onConfirm}>
@@ -40,9 +40,13 @@ const ConfirmDialog = ({
         </div>
       }
     >
-      <div className="flex gap-3">
-        <AlertTriangle className="text-red-500 mt-1" size={20} />
-        <div>{description && <p className="text-sm text-gray-600">{description}</p>}</div>
+      <div className="flex gap-4 items-start">
+        <div className="flex-shrink-0 w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+          <AlertTriangle className="text-red-600" size={20} />
+        </div>
+        <div className="flex-1 pt-1">
+          {description && <p className="text-sm text-gray-600 leading-relaxed">{description}</p>}
+        </div>
       </div>
     </Modal>
   );

@@ -10,10 +10,10 @@ interface Props {
 
 const Card = ({ title, actions, children, className }: Props) => {
   return (
-    <div className={clsx('bg-white rounded-xl shadow', className)}>
+    <div className={clsx('bg-white rounded-lg shadow-sm border border-gray-200', className)}>
       {(title || actions) && (
-        <div className="flex items-center justify-between border-b px-4 py-3">
-          {title && <h3 className="font-semibold">{title}</h3>}
+        <div className="flex items-center justify-between border-b border-gray-200 px-4 py-2.5">
+          {title && <h3 className="text-sm font-semibold text-gray-900">{title}</h3>}
           {actions && <div>{actions}</div>}
         </div>
       )}

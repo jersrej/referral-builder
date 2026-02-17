@@ -1,5 +1,5 @@
-import axios from 'axios'
+import axios from 'axios';
 
 export const http = axios.create({
-  baseURL: 'http://localhost:3000/api',
-})
+  baseURL: `${import.meta.env.VITE_APP_API_URL}/api`
+});

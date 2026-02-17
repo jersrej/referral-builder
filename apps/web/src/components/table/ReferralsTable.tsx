@@ -28,16 +28,26 @@ const ReferralsTable = () => {
     { accessorKey: 'phone', header: 'Phone' },
     {
       id: 'actions',
-      header: '',
+      header: 'Actions',
       cell: ({ row }) => (
-        <div className="flex gap-2">
-          <Button variant="ghost" size="sm" onClick={() => setEditingReferral(row.original)}>
+        <div className="flex gap-1.5">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setEditingReferral(row.original)}
+            className="hover:bg-blue-50 hover:text-blue-700"
+          >
             <Pencil size={16} />
           </Button>
 
           {row.original.id && (
-            <Button variant="ghost" size="sm" onClick={() => setSelectedId(row.original.id!)}>
-              <Trash2 size={16} className="text-red-500" />
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setSelectedId(row.original.id!)}
+              className="hover:bg-red-50 hover:text-red-700"
+            >
+              <Trash2 size={16} />
             </Button>
           )}
         </div>

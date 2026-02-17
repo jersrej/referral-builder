@@ -6,11 +6,11 @@ import { useEffect, useState } from 'react';
 import Card from '../ui/Card';
 import FormInput from './FormInput';
 import Button from '../ui/Button';
+import FileUpload from '../ui/FileUpload';
 import { toast } from 'sonner';
-import type { AxiosError } from 'axios';
 
 interface Props {
-  onChange?: (values: ReferralFormValues) => void;
+  onChange?: (values: ReferralFormValues | undefined) => void;
   defaultValues?: Partial<ReferralFormValues>;
   onSubmit?: (values: FormData) => Promise<void>;
   isSubmitting?: boolean;
@@ -78,7 +78,7 @@ const ReferralForm = ({ onChange, defaultValues, onSubmit, isSubmitting }: Props
         setAvatarPreview(null);
         setRemovedExistingAvatar(false);
         reset({ ...blankValues, avatar: undefined });
-        onChange?.({ ...blankValues, avatar: undefined });
+        onChange?.(undefined);
       },
       onError: () => {
         toast.error('Failed to create referral. Please try again.');
@@ -96,97 +96,74 @@ const ReferralForm = ({ onChange, defaultValues, onSubmit, isSubmitting }: Props
   return (
     <Card title="Referral Form">
       <form onSubmit={handleSubmit(onSubmitHandler)} className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
-          <FormInput name="firstName" control={control} label="First Name" />
-          <FormInput name="lastName" control={control} label="Last Name" />
+        {/* Personal Information Section */}
+        <div className="space-y-2.5">
+          <h4 className="text-xs font-semibold text-gray-600 uppercase tracking-wide">
+            Personal Information
+          </h4>
+          <div className="space-y-3 pl-1">
+            <div className="grid grid-cols-2 gap-3">
+              <FormInput name="firstName" control={control} label="First Name" />
+              <FormInput name="lastName" control={control} label="Last Name" />
+            </div>
+
+            <FormInput name="email" control={control} label="Email" type="email" />
+            <FormInput name="phone" control={control} label="Phone" />
+          </div>
         </div>
 
-        <FormInput name="email" control={control} label="Email" type="email" />
-        <FormInput name="phone" control={control} label="Phone" />
+        {/* Address Section */}
+        <div className="space-y-2.5 pt-2 border-t border-gray-100">
+          <h4 className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Address</h4>
+          <div className="space-y-3 pl-1">
+            <div className="grid grid-cols-2 gap-3">
+              <FormInput name="homeNumber" control={control} label="Home #" />
+              <FormInput name="street" control={control} label="Street" />
+            </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <FormInput name="homeNumber" control={control} label="Home #" />
-          <FormInput name="street" control={control} label="Street" />
+            <div className="grid grid-cols-3 gap-3">
+              <FormInput name="suburb" control={control} label="Suburb" />
+              <FormInput name="state" control={control} label="State" />
+              <FormInput name="postcode" control={control} label="Postcode" />
+            </div>
+
+            <FormInput name="country" control={control} label="Country" />
+          </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-4">
-          <FormInput name="suburb" control={control} label="Suburb" />
-          <FormInput name="state" control={control} label="State" />
-          <FormInput name="postcode" control={control} label="Postcode" />
-        </div>
-
-        <FormInput name="country" control={control} label="Country" />
-
-        {/* Avatar Upload */}
-        <Controller
-          name="avatar"
-          control={control}
-          render={({ field }) => (
-            <div className="flex flex-col gap-2">
-              <label className="text-sm font-medium">Avatar</label>
-
-              {/* Existing Avatar (Edit Mode) */}
-              {defaultValues?.avatarUrl && !avatarPreview && !removedExistingAvatar && (
-                <div className="relative w-fit">
-                  <img
-                    src={defaultValues.avatarUrl}
-                    alt="Current avatar"
-                    className="h-20 w-20 rounded-full object-cover border"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setRemovedExistingAvatar(true);
-                      setAvatarPreview(null);
-                      field.onChange(null);
-                    }}
-                    className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full"
-                  >
-                    ✕
-                  </button>
-                </div>
-              )}
-
-              {/* New Preview */}
-              {avatarPreview && (
-                <div className="relative w-fit">
-                  <img
-                    src={avatarPreview}
-                    alt="Avatar preview"
-                    className="h-20 w-20 rounded-full object-cover border"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setAvatarPreview(null);
-                      field.onChange(null);
-                    }}
-                    className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full"
-                  >
-                    ✕
-                  </button>
-                </div>
-              )}
-
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) {
-                    const previewUrl = URL.createObjectURL(file);
+        {/* Avatar Section */}
+        <div className="pt-2 border-t border-gray-100">
+          <Controller
+            name="avatar"
+            control={control}
+            render={({ field }) => (
+              <FileUpload
+                value={field.value}
+                onChange={(files) => {
+                  if (files && files.length > 0) {
+                    const previewUrl = URL.createObjectURL(files[0]);
                     setAvatarPreview(previewUrl);
                     setRemovedExistingAvatar(false);
-                    field.onChange(e.target.files);
+                    field.onChange(files);
                   }
                 }}
-                className="block w-full text-sm"
+                preview={
+                  avatarPreview ||
+                  (defaultValues?.avatarUrl && !removedExistingAvatar
+                    ? defaultValues.avatarUrl
+                    : null)
+                }
+                onRemove={() => {
+                  setAvatarPreview(null);
+                  setRemovedExistingAvatar(true);
+                  field.onChange(null);
+                }}
               />
-            </div>
-          )}
-        />
+            )}
+          />
+        </div>
 
-        <Button type="submit" loading={isSubmitting || isPending}>
+        <Button type="submit" loading={isSubmitting || isPending} className="w-full">
           {onSubmit ? 'Update Referral' : 'Create Referral'}
         </Button>
       </form>

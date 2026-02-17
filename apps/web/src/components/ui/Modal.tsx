@@ -16,32 +16,39 @@ interface Props {
 const sizeStyles = {
   sm: 'max-w-md',
   md: 'max-w-lg',
-  lg: 'max-w-2xl'
+  lg: 'max-w-3xl'
 };
 
 const overlayVariants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1 },
-  exit: { opacity: 0 }
+  visible: {
+    opacity: 1,
+    transition: { duration: 0.2, ease: 'easeOut' as const }
+  },
+  exit: {
+    opacity: 0,
+    transition: { duration: 0.15, ease: 'easeIn' as const }
+  }
 };
 
 const modalVariants = {
-  hidden: { opacity: 0, scale: 0.96, y: 24 },
+  hidden: { opacity: 0, scale: 0.95, y: 20 },
   visible: {
     opacity: 1,
     scale: 1,
     y: 0,
     transition: {
       type: 'spring' as const,
-      stiffness: 300,
-      damping: 25
+      stiffness: 400,
+      damping: 30,
+      mass: 0.8
     }
   },
   exit: {
     opacity: 0,
-    scale: 0.96,
-    y: 16,
-    transition: { duration: 0.15, ease: 'easeIn' as const }
+    scale: 0.95,
+    y: 10,
+    transition: { duration: 0.2, ease: 'easeIn' as const }
   }
 };
 
@@ -66,12 +73,12 @@ const Modal = ({
   if (!open) return null;
 
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           {/* Overlay */}
           <motion.div
-            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
             onClick={() => closeOnOverlayClick && onClose()}
             variants={overlayVariants}
             initial="hidden"
@@ -82,7 +89,7 @@ const Modal = ({
           {/* Modal */}
           <motion.div
             className={clsx(
-              'relative bg-white rounded-xl shadow-lg w-full mx-4 max-h-[90vh] overflow-y-auto',
+              'relative bg-white rounded-2xl shadow-2xl w-full max-h-[92vh] flex flex-col',
               sizeStyles[size]
             )}
             variants={modalVariants}
@@ -90,16 +97,27 @@ const Modal = ({
             animate="visible"
             exit="exit"
           >
-            <div className="flex items-center justify-between border-b px-4 py-3">
-              {title && <h3 className="font-semibold">{title}</h3>}
-              <button onClick={onClose} className="p-1 rounded hover:bg-gray-100">
-                <X size={18} />
+            {/* Header */}
+            <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4 shrink-0">
+              {title && <h2 className="text-lg font-semibold text-gray-900">{title}</h2>}
+              <button
+                onClick={onClose}
+                className="p-2 -mr-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-500 hover:text-gray-700"
+                aria-label="Close modal"
+              >
+                <X size={20} />
               </button>
             </div>
 
-            <div className="p-4">{children}</div>
+            {/* Content */}
+            <div className="overflow-y-auto flex-1 px-6 py-4">{children}</div>
 
-            {footer && <div className="border-t px-4 py-3">{footer}</div>}
+            {/* Footer */}
+            {footer && (
+              <div className="border-t border-gray-200 px-6 py-4 bg-gray-50 rounded-b-2xl shrink-0">
+                {footer}
+              </div>
+            )}
           </motion.div>
         </div>
       )}

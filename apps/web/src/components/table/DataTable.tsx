@@ -29,13 +29,16 @@ const DataTable = <T,>({ data, columns, isLoading, pagination, emptyState }: Pro
 
   return (
     <div>
-      <div className="overflow-x-auto rounded-lg border bg-white">
-        <table className="min-w-full">
-          <thead className="bg-gray-100">
+      <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-linear-to-b from-gray-50 to-gray-100">
             {table.getHeaderGroups().map((hg) => (
               <tr key={hg.id}>
                 {hg.headers.map((header) => (
-                  <th key={header.id} className="px-4 py-2 text-left text-sm">
+                  <th
+                    key={header.id}
+                    className="px-4 py-2.5 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
+                  >
                     {flexRender(header.column.columnDef.header, header.getContext())}
                   </th>
                 ))}
@@ -43,7 +46,7 @@ const DataTable = <T,>({ data, columns, isLoading, pagination, emptyState }: Pro
             ))}
           </thead>
 
-          <tbody>
+          <tbody className="bg-white divide-y divide-gray-200">
             {isLoading ? (
               <tr>
                 <td colSpan={columns.length}>
@@ -61,9 +64,9 @@ const DataTable = <T,>({ data, columns, isLoading, pagination, emptyState }: Pro
               </tr>
             ) : (
               table.getRowModel().rows.map((row) => (
-                <tr key={row.id} className="border-t">
+                <tr key={row.id} className="hover:bg-gray-50 transition-colors duration-150">
                   {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} className="px-4 py-2 text-sm whitespace-nowrap">
+                    <td key={cell.id} className="px-4 py-3 text-sm text-gray-900 whitespace-nowrap">
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>
                   ))}
