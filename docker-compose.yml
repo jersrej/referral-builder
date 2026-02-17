@@ -1,0 +1,47 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: referral_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: referral_db
+      MYSQL_USER: referral_user
+      MYSQL_PASSWORD: referral_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: referral_phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: referral_user
+      PMA_PASSWORD: referral_pass
+    depends_on:
+      - mysql
+
+  api:
+    build:
+      context: ./apps/api
+    container_name: referral_api
+    restart: always
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./apps/api/.env
+    depends_on:
+      - mysql
+    volumes:
+      - ./apps/api:/app
+      - /app/node_modules
+
+volumes:
+  mysql_data:

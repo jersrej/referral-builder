@@ -1,0 +1,28 @@
+# Node
+node_modules/
+dist/
+build/
+
+# Env files
+.env
+.env.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+
+# Docker volumes
+mysql-data/
+
+# Uploads (optional — usually do not commit)
+apps/api/uploads/
+
+# Coverage
+coverage/
+
+# Vite
+.vite/
