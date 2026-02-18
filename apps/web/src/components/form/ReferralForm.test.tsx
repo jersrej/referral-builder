@@ -16,9 +16,11 @@ describe('ReferralForm', () => {
   it('shows validation errors when submitting empty form', async () => {
     renderWithProviders(<ReferralForm onChange={vi.fn()} />);
 
-    const submitButton = screen.getByRole('button');
+    const submitButton = screen
+      .getAllByRole('button')
+      .find((btn) => btn.getAttribute('type') === 'submit');
 
-    fireEvent.click(submitButton);
+    fireEvent.click(submitButton!);
 
     await waitFor(() => {
       expect(screen.getAllByText(/required/i).length).toBeGreaterThan(0);
@@ -70,7 +72,11 @@ describe('ReferralForm', () => {
       target: { value: 'Country' }
     });
 
-    fireEvent.click(screen.getByRole('button'));
+    const submitButton = screen
+      .getAllByRole('button')
+      .find((btn) => btn.getAttribute('type') === 'submit');
+
+    fireEvent.click(submitButton!);
 
     await waitFor(() => {
       expect(mockSubmit).toHaveBeenCalled();
@@ -93,7 +99,7 @@ describe('ReferralForm', () => {
     expect(screen.getByDisplayValue('jane@example.com')).toBeInTheDocument();
   });
 
-  it('should submit when avatar removed in edit mode', async () => {
+  it('should submit when avatar is not removed in edit mode', async () => {
     const mockSubmit = vi.fn();
 
     renderWithProviders(
@@ -109,19 +115,17 @@ describe('ReferralForm', () => {
           suburb: 'City',
           state: 'State',
           postcode: '1234',
-          country: 'Country',
-          avatarUrl: 'http://test/avatar.png'
+          country: 'Country'
         }}
         onSubmit={mockSubmit}
       />
     );
 
-    const removeBtn = screen.getByText('✕');
-    fireEvent.click(removeBtn);
-
-    const submitBtn = screen.getByRole('button');
-
-    fireEvent.click(submitBtn);
+    // submit
+    const submitBtn = screen
+      .getAllByRole('button')
+      .find((btn) => btn.getAttribute('type') === 'submit');
+    fireEvent.click(submitBtn!);
 
     await waitFor(() => {
       expect(mockSubmit).toHaveBeenCalled();
@@ -152,12 +156,14 @@ describe('ReferralForm', () => {
     );
 
     // remove avatar
-    const removeBtn = screen.getByText('✕');
+    const removeBtn = screen.getByRole('button', { name: 'Remove avatar' });
     fireEvent.click(removeBtn);
 
     // submit
-    const submitBtn = screen.getByRole('button');
-    fireEvent.click(submitBtn);
+    const submitBtn = screen
+      .getAllByRole('button')
+      .find((btn) => btn.getAttribute('type') === 'submit');
+    fireEvent.click(submitBtn!);
 
     await waitFor(() => {
       expect(mockSubmit).toHaveBeenCalled();

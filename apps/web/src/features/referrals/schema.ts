@@ -12,7 +12,7 @@ export const referralSchema = z.object({
   state: z.string().min(1, 'State is required'),
   postcode: z.string().min(1, 'Postcode is required'),
   country: z.string().min(1, 'Country is required'),
-  avatar: z.instanceof(FileList).optional(),
+  avatar: z.instanceof(FileList).nullable().optional(),
   avatarUrl: z.string().nullable().optional()
 });
 
