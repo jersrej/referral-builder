@@ -29,7 +29,12 @@ const DataTable = <T,>({ data, columns, isLoading, pagination, emptyState }: Pro
 
   return (
     <div>
-      <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm">
+      <div
+        className="overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm"
+        role="region"
+        aria-label="Referrals table"
+        tabIndex={0}
+      >
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-linear-to-b from-gray-50 to-gray-100">
             {table.getHeaderGroups().map((hg) => (

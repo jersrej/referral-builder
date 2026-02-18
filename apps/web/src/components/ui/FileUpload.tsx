@@ -54,10 +54,16 @@ const FileUpload = ({
 
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="text-sm font-medium text-gray-700">{label}</label>
+      <label id="file-upload-label" className="text-sm font-medium text-gray-700">
+        {label}
+      </label>
 
       {preview ? (
-        <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+        <div
+          className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200"
+          role="group"
+          aria-label="Avatar preview"
+        >
           <div className="relative">
             <img
               src={preview}
@@ -73,9 +79,9 @@ const FileUpload = ({
             type="button"
             onClick={onRemove}
             className="p-1.5 hover:bg-red-50 rounded-lg transition-colors group"
-            title="Remove avatar"
+            aria-label="Remove avatar"
           >
-            <X size={16} className="text-gray-500 group-hover:text-red-500" />
+            <X size={16} className="text-gray-500 group-hover:text-red-500" aria-hidden="true" />
           </button>
         </div>
       ) : (
@@ -84,8 +90,18 @@ const FileUpload = ({
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              handleClick();
+            }
+          }}
+          aria-labelledby="file-upload-label"
+          aria-describedby="file-upload-description"
           className={clsx(
-            'relative flex flex-col items-center justify-center gap-2 p-4 border-2 border-dashed rounded-lg transition-all cursor-pointer',
+            'relative flex flex-col items-center justify-center p-6 border-2 border-dashed rounded-lg transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
             isDragging
               ? 'border-blue-500 bg-blue-50'
               : 'border-gray-300 bg-gray-50 hover:bg-gray-100 hover:border-gray-400'

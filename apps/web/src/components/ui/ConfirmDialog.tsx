@@ -1,6 +1,7 @@
 import Modal from './Modal';
 import Button from './Button';
 import { AlertTriangle } from 'lucide-react';
+import { useId } from 'react';
 
 interface Props {
   open: boolean;
@@ -23,6 +24,8 @@ const ConfirmDialog = ({
   onConfirm,
   onClose
 }: Props) => {
+  const descriptionId = useId();
+
   return (
     <Modal
       open={open}
@@ -41,11 +44,18 @@ const ConfirmDialog = ({
       }
     >
       <div className="flex gap-4 items-start">
-        <div className="shrink-0 w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+        <div
+          className="shrink-0 w-10 h-10 rounded-full bg-red-100 flex items-center justify-center"
+          aria-hidden="true"
+        >
           <AlertTriangle className="text-red-600" size={20} />
         </div>
         <div className="flex-1 pt-1">
-          {description && <p className="text-sm text-gray-600 leading-relaxed">{description}</p>}
+          {description && (
+            <p id={descriptionId} className="text-sm text-gray-600 leading-relaxed">
+              {description}
+            </p>
+          )}
         </div>
       </div>
     </Modal>

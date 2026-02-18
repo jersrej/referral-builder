@@ -10,13 +10,13 @@ const HomePage = () => {
   return (
     <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100">
       <div className="mx-auto w-full px-4 py-4 md:px-32 md:py-6">
-        <div className="mb-4">
+        <header className="mb-4">
           <h1 className="text-xl md:text-2xl font-bold text-gray-900">Referral Builder</h1>
           <p className="text-xs text-gray-600 mt-0.5">Create and manage your referrals</p>
-        </div>
+        </header>
 
         {/* Two Column Layout: Form | Preview + Table */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
+        <main className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
           {/* Left Column: Form */}
           <div>
             <ReferralForm onChange={setPreview} />
@@ -31,7 +31,7 @@ const HomePage = () => {
               <ReferralsTable />
             </div>
           </div>
-        </div>
+        </main>
       </div>
     </div>
   );

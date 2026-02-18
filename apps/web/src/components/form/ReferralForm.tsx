@@ -95,12 +95,16 @@ const ReferralForm = ({ onChange, defaultValues, onSubmit, isSubmitting }: Props
 
   return (
     <Card title="Referral Form">
-      <form onSubmit={handleSubmit(onSubmitHandler)} className="space-y-4">
+      <form
+        onSubmit={handleSubmit(onSubmitHandler)}
+        className="space-y-4"
+        aria-label="Referral form"
+      >
         {/* Personal Information Section */}
-        <div className="space-y-2.5">
-          <h4 className="text-xs font-semibold text-gray-600 uppercase tracking-wide">
+        <fieldset className="space-y-2.5">
+          <legend className="text-xs font-semibold text-gray-600 uppercase tracking-wide">
             Personal Information
-          </h4>
+          </legend>
           <div className="space-y-3 pl-1">
             <div className="grid grid-cols-2 gap-3">
               <FormInput name="firstName" control={control} label="First Name" />
@@ -110,11 +114,13 @@ const ReferralForm = ({ onChange, defaultValues, onSubmit, isSubmitting }: Props
             <FormInput name="email" control={control} label="Email" type="email" />
             <FormInput name="phone" control={control} label="Phone" />
           </div>
-        </div>
+        </fieldset>
 
         {/* Address Section */}
-        <div className="space-y-2.5 pt-2 border-t border-gray-100">
-          <h4 className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Address</h4>
+        <fieldset className="space-y-2.5 pt-2 border-t border-gray-100">
+          <legend className="text-xs font-semibold text-gray-600 uppercase tracking-wide">
+            Address
+          </legend>
           <div className="space-y-3 pl-1">
             <div className="grid grid-cols-2 gap-3">
               <FormInput name="homeNumber" control={control} label="Home #" />
@@ -129,10 +135,11 @@ const ReferralForm = ({ onChange, defaultValues, onSubmit, isSubmitting }: Props
 
             <FormInput name="country" control={control} label="Country" />
           </div>
-        </div>
+        </fieldset>
 
         {/* Avatar Section */}
-        <div className="pt-2 border-t border-gray-100">
+        <fieldset className="pt-2 border-t border-gray-100">
+          <legend className="sr-only">Avatar upload</legend>
           <Controller
             name="avatar"
             control={control}
@@ -161,9 +168,14 @@ const ReferralForm = ({ onChange, defaultValues, onSubmit, isSubmitting }: Props
               />
             )}
           />
-        </div>
+        </fieldset>
 
-        <Button type="submit" loading={isSubmitting || isPending} className="w-full">
+        <Button
+          type="submit"
+          loading={isSubmitting || isPending}
+          className="w-full"
+          aria-label={onSubmit ? 'Update referral' : 'Create referral'}
+        >
           {onSubmit ? 'Update Referral' : 'Create Referral'}
         </Button>
       </form>

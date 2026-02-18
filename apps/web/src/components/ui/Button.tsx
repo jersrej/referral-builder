@@ -42,10 +42,15 @@ const Button = ({
         className
       )}
       disabled={disabled || loading}
+      aria-busy={loading}
+      aria-disabled={disabled || loading}
       {...props}
     >
       {loading && (
-        <span className="mr-2 h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+        <span
+          className="mr-2 h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"
+          aria-hidden="true"
+        />
       )}
       {children}
     </button>

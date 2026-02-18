@@ -36,8 +36,9 @@ const ReferralsTable = () => {
             size="sm"
             onClick={() => setEditingReferral(row.original)}
             className="hover:bg-blue-50 hover:text-blue-700"
+            aria-label={`Edit ${row.original.firstName} ${row.original.lastName}`}
           >
-            <Pencil size={16} />
+            <Pencil size={16} aria-hidden="true" />
           </Button>
 
           {row.original.id && (
@@ -46,8 +47,9 @@ const ReferralsTable = () => {
               size="sm"
               onClick={() => setSelectedId(row.original.id!)}
               className="hover:bg-red-50 hover:text-red-700"
+              aria-label={`Delete ${row.original.firstName} ${row.original.lastName}`}
             >
-              <Trash2 size={16} />
+              <Trash2 size={16} aria-hidden="true" />
             </Button>
           )}
         </div>

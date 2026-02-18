@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect } from 'react';
+import { type ReactNode, useEffect, useRef, useId } from 'react';
 import { X } from 'lucide-react';
 import clsx from 'clsx';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -61,13 +61,43 @@ const Modal = ({
   size = 'md',
   closeOnOverlayClick = true
 }: Props) => {
+  const titleId = useId();
+  const modalRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (!open) return;
+
+    // Focus trap
+    const focusableElements = modalRef.current?.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    const firstElement = focusableElements?.[0] as HTMLElement;
+    const lastElement = focusableElements?.[focusableElements.length - 1] as HTMLElement;
+
+    firstElement?.focus();
+
+    const handleTab = (e: KeyboardEvent) => {
+      if (e.key === 'Tab') {
+        if (e.shiftKey && document.activeElement === firstElement) {
+          e.preventDefault();
+          lastElement?.focus();
+        } else if (!e.shiftKey && document.activeElement === lastElement) {
+          e.preventDefault();
+          firstElement?.focus();
+        }
+      }
+    };
+
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
+
     window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
+    window.addEventListener('keydown', handleTab);
+    return () => {
+      window.removeEventListener('keydown', handleEsc);
+      window.removeEventListener('keydown', handleTab);
+    };
   }, [open, onClose]);
 
   if (!open) return null;
@@ -84,10 +114,15 @@ const Modal = ({
             initial="hidden"
             animate="visible"
             exit="exit"
+            aria-hidden="true"
           />
 
           {/* Modal */}
           <motion.div
+            ref={modalRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={titleId}
             className={clsx(
               'relative bg-white rounded-2xl shadow-2xl w-full max-h-[92vh] flex flex-col',
               sizeStyles[size]
