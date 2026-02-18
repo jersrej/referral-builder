@@ -59,6 +59,12 @@ referral-builder/
 cd apps/api
 cp .env.example .env
 docker compose up --build
+
+# enter the API Container
+docker compose exec api sh
+
+# then apply the migrations
+npm run migration:run
 ```
 
 Services started:
