@@ -1,4 +1,4 @@
-# 🏗 Architecture Overview
+# Architecture Overview
 
 This document explains the high-level architecture and design decisions
 of the Referral Builder application.
@@ -7,24 +7,9 @@ of the Referral Builder application.
 
 # High-Level System Architecture
 
-                        ┌────────────────────────┐
-                        │        Frontend        │
-                        │  React (Vite + TS)     │
-                        └────────────┬───────────┘
-                                     │
-                                     │ HTTP (REST)
-                                     │
-                        ┌────────────▼────────────┐
-                        │         Backend         │
-                        │      NestJS API         │
-                        └────────────┬────────────┘
-                                     │
-                                     │ TypeORM
-                                     │
-                        ┌────────────▼────────────┐
-                        │        MySQL DB         │
-                        │     (Dockerized)        │
-                        └─────────────────────────┘
+```
+Frontend React (Vite + TS) -> Backend NestJS API -> MySQL DB (Dockerized)
+```
 
 ------------------------------------------------------------------------
 
@@ -33,24 +18,24 @@ of the Referral Builder application.
 The frontend follows a modular and reusable component-based structure.
 
     UI Layer
-       ├── Button
-       ├── Input
-       ├── Modal
-       ├── ConfirmDialog
-       ├── DataTable
-       ├── Pagination
-       └── EmptyState
+       |-- Button
+       |-- Input
+       |-- Modal
+       |-- ConfirmDialog
+       |-- DataTable
+       |-- Pagination
+       |-- EmptyState
 
     Feature Layer
-       ├── ReferralForm
-       ├── ReferralPreview
-       └── ReferralsTable
+       |-- ReferralForm
+       |-- ReferralPreview
+       |-- ReferralsTable
 
     Hooks Layer
-       ├── useCreateReferral
-       ├── useUpdateReferral
-       ├── useDeleteReferral
-       └── useGetReferrals
+       |-- useCreateReferral
+       |-- useUpdateReferral
+       |-- useDeleteReferral
+       |-- useGetReferrals
 
 ### Key Design Principles
 
@@ -67,16 +52,16 @@ The frontend follows a modular and reusable component-based structure.
 The backend follows a layered architecture pattern.
 
     Controller Layer
-       └── ReferralsController
+       |-- ReferralsController
 
     Service Layer
-       └── ReferralsService
+       |-- ReferralsService
 
     Data Layer
-       └── TypeORM Repository
+       |-- TypeORM Repository
 
     Database
-       └── MySQL (Soft Delete Enabled)
+       |-- MySQL (Soft Delete Enabled)
 
 ### Backend Design Decisions
 
