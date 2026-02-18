@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { http } from '@/lib/http';
-import type { ReferralType } from '../schema';
+import type { ReferralType } from '../types';
 
 interface Params {
   page: number;

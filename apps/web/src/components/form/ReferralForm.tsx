@@ -1,6 +1,6 @@
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { referralSchema, type ReferralType } from '@/features/referrals/schema';
+import { referralSchema } from '@/features/referrals/schema';
 import { useCreateReferral } from '@/features/referrals/hooks/useCreateReferral';
 import { useEffect, useState } from 'react';
 import Card from '../ui/Card';
@@ -9,6 +9,7 @@ import Button from '../ui/Button';
 import FileUpload from '../ui/FileUpload';
 import { toast } from 'sonner';
 import { getErrorMessage } from '@/lib/error-handler';
+import type { ReferralType } from '@/features/referrals/types';
 
 interface Props {
   onChange?: (values: ReferralType | undefined) => void;

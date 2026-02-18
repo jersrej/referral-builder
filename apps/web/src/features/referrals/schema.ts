@@ -15,5 +15,3 @@ export const referralSchema = z.object({
   avatar: z.instanceof(FileList).nullable().optional(),
   avatarUrl: z.string().nullable().optional()
 });
-
-export type ReferralType = z.infer<typeof referralSchema>;

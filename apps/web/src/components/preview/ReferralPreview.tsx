@@ -1,4 +1,4 @@
-import type { ReferralType } from '@/features/referrals/schema';
+import type { ReferralType } from '@/features/referrals/types';
 import Card from '../ui/Card';
 import { Mail, Phone, MapPin, User } from 'lucide-react';
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { ReferralType } from '@/features/referrals/schema';
+import type { ReferralType } from '@/features/referrals/types';
 import ReferralForm from '@/components/form/ReferralForm';
 import ReferralPreview from '@/components/preview/ReferralPreview';
 import ReferralsTable from '@/components/table/ReferralsTable';

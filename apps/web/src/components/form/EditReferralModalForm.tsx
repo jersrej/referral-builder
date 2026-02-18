@@ -1,6 +1,6 @@
 import Modal from '@/components/ui/Modal';
 import ReferralForm from './ReferralForm';
-import { type ReferralType } from '@/features/referrals/schema';
+import { type ReferralType } from '@/features/referrals/types';
 import { useUpdateReferral } from '@/features/referrals/hooks/useUpdateReferral';
 import { toast } from 'sonner';
 import { getErrorMessage } from '@/lib/error-handler';

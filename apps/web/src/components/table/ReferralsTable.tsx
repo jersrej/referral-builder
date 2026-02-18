@@ -6,7 +6,7 @@ import Button from '../ui/Button';
 import { Pencil, Trash2 } from 'lucide-react';
 import { useDeleteReferral } from '@/features/referrals/hooks/useDeleteReferral';
 import ConfirmDialog from '../ui/ConfirmDialog';
-import type { ReferralType } from '@/features/referrals/schema';
+import type { ReferralType } from '@/features/referrals/types';
 import EditReferralFormModal from '../form/EditReferralModalForm';
 import { toast } from 'sonner';
 import { getErrorMessage } from '@/lib/error-handler';
