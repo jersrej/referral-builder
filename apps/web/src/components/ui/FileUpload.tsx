@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { Upload, X, User } from 'lucide-react';
 import clsx from 'clsx';
+import { validateFile } from '@/lib/file-validation';
 
 interface Props {
   value?: FileList | null;
@@ -9,6 +10,7 @@ interface Props {
   onRemove?: () => void;
   accept?: string;
   label?: string;
+  onError?: (error: string) => void;
 }
 
 const FileUpload = ({
@@ -16,19 +18,41 @@ const FileUpload = ({
   preview,
   onRemove,
   accept = 'image/*',
-  label = 'Avatar'
+  label = 'Avatar',
+  onError
 }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleClick = () => {
     inputRef.current?.click();
   };
 
+  const validateAndUpdateFile = (file: File) => {
+    const validation = validateFile(file);
+    // const validation = validateFile(file, mbToBytes(10)); // for example we can set max file size to 10MB
+
+    if (!validation.isValid) {
+      setError(validation.error || 'Invalid file');
+      onError?.(validation.error || 'Invalid file');
+      return false;
+    }
+
+    setError(null);
+    return true;
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
-      onChange(files);
+      if (validateAndUpdateFile(files[0])) {
+        onChange(files);
+      } else {
+        if (inputRef.current) {
+          inputRef.current.value = '';
+        }
+      }
     }
   };
 
@@ -46,9 +70,11 @@ const FileUpload = ({
     setIsDragging(false);
     const files = e.dataTransfer.files;
     if (files && files.length > 0) {
-      const dataTransfer = new DataTransfer();
-      dataTransfer.items.add(files[0]);
-      onChange(dataTransfer.files);
+      if (validateAndUpdateFile(files[0])) {
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(files[0]);
+        onChange(dataTransfer.files);
+      }
     }
   };
 
@@ -124,7 +150,7 @@ const FileUpload = ({
               {isDragging ? 'Drop image here' : 'Upload avatar'}
             </p>
             <p className="text-xs text-gray-500 mt-0.5">
-              Click to browse or drag and drop (PNG, JPG, GIF up to 10MB)
+              Click to browse or drag and drop (PNG, JPG, GIF up to 2MB)
             </p>
           </div>
         </div>
@@ -136,7 +162,14 @@ const FileUpload = ({
         accept={accept}
         onChange={handleChange}
         className="hidden"
+        aria-describedby={error ? 'file-upload-error' : undefined}
       />
+
+      {error && (
+        <p id="file-upload-error" className="text-sm text-red-600" role="alert">
+          {error}
+        </p>
+      )}
     </div>
   );
 };

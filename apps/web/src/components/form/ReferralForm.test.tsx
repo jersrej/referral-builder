@@ -3,6 +3,7 @@ import { renderWithProviders } from '@/test/test-utils';
 import { describe, it, expect, vi } from 'vitest';
 import '@testing-library/jest-dom';
 import ReferralForm from './ReferralForm';
+import { mbToBytes } from '@/lib/file-validation';
 
 describe('ReferralForm', () => {
   it('renders form fields', () => {
@@ -167,6 +168,84 @@ describe('ReferralForm', () => {
 
     await waitFor(() => {
       expect(mockSubmit).toHaveBeenCalled();
+    });
+  });
+
+  describe('File upload validation', () => {
+    it('should reject files larger than 2MB', async () => {
+      const { container } = renderWithProviders(<ReferralForm onChange={vi.fn()} />);
+
+      const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
+
+      const largeFile = new File(['x'.repeat(mbToBytes(3))], 'large-avatar.png', {
+        type: 'image/png'
+      });
+
+      fireEvent.change(fileInput, {
+        target: { files: [largeFile] }
+      });
+
+      await waitFor(() => {
+        expect(screen.getByText(/File size exceeds 2MB/i)).toBeInTheDocument();
+      });
+    });
+
+    it('should accept files smaller than 2MB', async () => {
+      const { container } = renderWithProviders(<ReferralForm onChange={vi.fn()} />);
+
+      const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
+
+      const validFile = new File(['x'.repeat(1024)], 'valid-avatar.png', {
+        type: 'image/png'
+      });
+
+      fireEvent.change(fileInput, {
+        target: { files: [validFile] }
+      });
+
+      await waitFor(() => {
+        expect(screen.queryByText(/File size exceeds/i)).not.toBeInTheDocument();
+      });
+    });
+
+    it('should reject non-image files', async () => {
+      const { container } = renderWithProviders(<ReferralForm onChange={vi.fn()} />);
+
+      const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
+
+      const textFile = new File(['test content'], 'document.txt', {
+        type: 'text/plain'
+      });
+
+      fireEvent.change(fileInput, {
+        target: { files: [textFile] }
+      });
+
+      await waitFor(() => {
+        expect(screen.getByText(/Only image files are allowed/i)).toBeInTheDocument();
+      });
+    });
+
+    it('should accept valid image types', async () => {
+      const { container } = renderWithProviders(<ReferralForm onChange={vi.fn()} />);
+
+      const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
+
+      const imageTypes = ['image/png', 'image/jpeg', 'image/gif'];
+
+      for (const type of imageTypes) {
+        const validImage = new File(['x'.repeat(1024)], `avatar.${type.split('/')[1]}`, {
+          type
+        });
+
+        fireEvent.change(fileInput, {
+          target: { files: [validImage] }
+        });
+
+        await waitFor(() => {
+          expect(screen.queryByText(/Only image files are allowed/i)).not.toBeInTheDocument();
+        });
+      }
     });
   });
 });
