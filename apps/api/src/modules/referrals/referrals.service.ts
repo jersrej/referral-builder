@@ -17,7 +17,6 @@ export class ReferralsService {
   ) {}
 
   async create(dto: CreateReferralDto) {
-    console.log(dto, 'Creating referral with DTO');
     try {
       const referral = this.repo.create({
         ...dto,

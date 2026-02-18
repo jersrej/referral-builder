@@ -44,10 +44,10 @@ const ReferralForm = ({ onChange, defaultValues, onSubmit, isSubmitting }: Props
   });
 
   useEffect(() => {
-    if (defaultValues?.avatar && typeof defaultValues.avatar === 'string') {
-      setAvatarPreview(defaultValues.avatar);
+    if (defaultValues?.avatarUrl) {
+      setAvatarPreview(defaultValues.avatarUrl);
     }
-  }, [defaultValues]);
+  }, [defaultValues?.avatarUrl]);
 
   const { mutateAsync: createReferralForm, isPending } = useCreateReferral();
 
