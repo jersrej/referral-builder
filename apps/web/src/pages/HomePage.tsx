@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import type { ReferralFormValues } from '@/features/referrals/schema';
+import type { ReferralType } from '@/features/referrals/schema';
 import ReferralForm from '@/components/form/ReferralForm';
 import ReferralPreview from '@/components/preview/ReferralPreview';
 import ReferralsTable from '@/components/table/ReferralsTable';
 
 const HomePage = () => {
-  const [preview, setPreview] = useState<ReferralFormValues | undefined>(undefined);
+  const [preview, setPreview] = useState<ReferralType | undefined>(undefined);
 
   return (
     <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100">

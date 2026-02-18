@@ -124,7 +124,7 @@ const Modal = ({
             aria-modal="true"
             aria-labelledby={titleId}
             className={clsx(
-              'relative bg-white rounded-2xl shadow-2xl w-full max-h-[92vh] flex flex-col',
+              'relative bg-white rounded-2xl shadow-2xl w-full max-h-[95vh] flex flex-col',
               sizeStyles[size]
             )}
             variants={modalVariants}
@@ -140,12 +140,12 @@ const Modal = ({
                 className="p-2 -mr-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-500 hover:text-gray-700"
                 aria-label="Close modal"
               >
-                <X size={20} />
+                <X size={20} aria-hidden="true" />
               </button>
             </div>
 
             {/* Content */}
-            <div className="overflow-y-auto flex-1 px-6 py-4">{children}</div>
+            <div className="overflow-y-auto flex-1 px-6 py-2">{children}</div>
 
             {/* Footer */}
             {footer && (

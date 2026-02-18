@@ -123,8 +123,9 @@ const FileUpload = ({
             <p className="text-sm font-medium text-gray-700">
               {isDragging ? 'Drop image here' : 'Upload avatar'}
             </p>
-            <p className="text-xs text-gray-500 mt-0.5">Click to browse or drag and drop</p>
-            <p className="text-xs text-gray-400 mt-0.5">PNG, JPG, GIF up to 10MB</p>
+            <p className="text-xs text-gray-500 mt-0.5">
+              Click to browse or drag and drop (PNG, JPG, GIF up to 10MB)
+            </p>
           </div>
         </div>
       )}

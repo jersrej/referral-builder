@@ -1,12 +1,12 @@
 import { type ColumnDef } from '@tanstack/react-table';
 import DataTable from './DataTable';
-import { useReferralsQuery } from '@/features/referrals/hooks/useReferralsQuery';
+import { useGetReferrals } from '@/features/referrals/hooks/useGetReferrals';
 import { useState } from 'react';
 import Button from '../ui/Button';
 import { Pencil, Trash2 } from 'lucide-react';
 import { useDeleteReferral } from '@/features/referrals/hooks/useDeleteReferral';
 import ConfirmDialog from '../ui/ConfirmDialog';
-import type { ReferralFormValues } from '@/features/referrals/schema';
+import type { ReferralType } from '@/features/referrals/schema';
 import EditReferralFormModal from '../form/EditReferralModalForm';
 import { toast } from 'sonner';
 
@@ -14,14 +14,14 @@ const ReferralsTable = () => {
   const [page, setPage] = useState(1);
   const limit = 5;
 
-  const { data, isLoading } = useReferralsQuery({ page, limit });
+  const { data, isLoading } = useGetReferrals({ page, limit });
 
   const { mutateAsync: deleteReferral, isPending } = useDeleteReferral();
 
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [editingReferral, setEditingReferral] = useState<ReferralFormValues | null>(null);
+  const [editingReferral, setEditingReferral] = useState<ReferralType | null>(null);
 
-  const columns: ColumnDef<ReferralFormValues>[] = [
+  const columns: ColumnDef<ReferralType>[] = [
     { accessorKey: 'firstName', header: 'First Name' },
     { accessorKey: 'lastName', header: 'Last Name' },
     { accessorKey: 'email', header: 'Email' },

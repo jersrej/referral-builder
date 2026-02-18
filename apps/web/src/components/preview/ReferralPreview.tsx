@@ -1,9 +1,9 @@
-import type { ReferralFormValues } from '@/features/referrals/schema';
+import type { ReferralType } from '@/features/referrals/schema';
 import Card from '../ui/Card';
 import { Mail, Phone, MapPin, User } from 'lucide-react';
 
 interface Props {
-  data?: ReferralFormValues;
+  data?: ReferralType;
 }
 
 const ReferralPreview = ({ data }: Props) => {

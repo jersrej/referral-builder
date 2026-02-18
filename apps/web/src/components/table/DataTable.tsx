@@ -11,7 +11,7 @@ interface PaginationProps {
 
 interface Props<T> {
   data: T[];
-  columns: ColumnDef<T, any>[];
+  columns: ColumnDef<T>[];
   isLoading?: boolean;
   pagination?: PaginationProps;
   emptyState?: {

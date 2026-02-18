@@ -50,7 +50,7 @@ The frontend follows a modular and reusable component-based structure.
        ├── useCreateReferral
        ├── useUpdateReferral
        ├── useDeleteReferral
-       └── useReferralsQuery
+       └── useGetReferrals
 
 ### Key Design Principles
 

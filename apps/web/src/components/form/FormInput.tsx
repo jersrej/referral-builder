@@ -1,15 +1,21 @@
-import { type Control, Controller } from 'react-hook-form';
+import { type Control, Controller, type FieldValues, type Path } from 'react-hook-form';
 import Input from '@/components/ui/Input';
 
-interface Props {
-  name: string;
-  control: Control<any>;
+interface Props<T extends FieldValues> {
+  name: Path<T>;
+  control: Control<T>;
   label?: string;
   type?: string;
   placeholder?: string;
 }
 
-const FormInput = ({ name, control, label, type = 'text', placeholder }: Props) => {
+const FormInput = <T extends FieldValues>({
+  name,
+  control,
+  label,
+  type = 'text',
+  placeholder
+}: Props<T>) => {
   return (
     <Controller
       name={name}

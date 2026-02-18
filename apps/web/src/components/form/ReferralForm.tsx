@@ -1,6 +1,6 @@
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { referralSchema, type ReferralFormValues } from '@/features/referrals/schema';
+import { referralSchema, type ReferralType } from '@/features/referrals/schema';
 import { useCreateReferral } from '@/features/referrals/hooks/useCreateReferral';
 import { useEffect, useState } from 'react';
 import Card from '../ui/Card';
@@ -10,13 +10,13 @@ import FileUpload from '../ui/FileUpload';
 import { toast } from 'sonner';
 
 interface Props {
-  onChange?: (values: ReferralFormValues | undefined) => void;
-  defaultValues?: Partial<ReferralFormValues>;
+  onChange?: (values: ReferralType | undefined) => void;
+  defaultValues?: Partial<ReferralType>;
   onSubmit?: (values: FormData) => Promise<void>;
   isSubmitting?: boolean;
 }
 
-const blankValues: ReferralFormValues = {
+const blankValues: ReferralType = {
   firstName: '',
   lastName: '',
   email: '',
@@ -35,7 +35,7 @@ const ReferralForm = ({ onChange, defaultValues, onSubmit, isSubmitting }: Props
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [removedExistingAvatar, setRemovedExistingAvatar] = useState<boolean>(false);
 
-  const { control, handleSubmit, watch, reset } = useForm<ReferralFormValues>({
+  const { control, handleSubmit, watch, reset } = useForm<ReferralType>({
     resolver: zodResolver(referralSchema),
     defaultValues: {
       ...blankValues,
@@ -51,7 +51,7 @@ const ReferralForm = ({ onChange, defaultValues, onSubmit, isSubmitting }: Props
 
   const { mutateAsync: createReferralForm, isPending } = useCreateReferral();
 
-  const onSubmitHandler = async (data: ReferralFormValues) => {
+  const onSubmitHandler = async (data: ReferralType) => {
     const formData = new FormData();
 
     Object.entries(data).forEach(([key, value]) => {
@@ -88,7 +88,7 @@ const ReferralForm = ({ onChange, defaultValues, onSubmit, isSubmitting }: Props
 
   useEffect(() => {
     const subscription = watch((value) => {
-      onChange?.(value as ReferralFormValues);
+      onChange?.(value as ReferralType);
     });
     return () => subscription.unsubscribe();
   }, [watch, onChange]);
