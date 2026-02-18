@@ -9,6 +9,7 @@ import ConfirmDialog from '../ui/ConfirmDialog';
 import type { ReferralType } from '@/features/referrals/schema';
 import EditReferralFormModal from '../form/EditReferralModalForm';
 import { toast } from 'sonner';
+import { getErrorMessage } from '@/lib/error-handler';
 
 const ReferralsTable = () => {
   const [page, setPage] = useState(1);
@@ -92,6 +93,13 @@ const ReferralsTable = () => {
               onSuccess: () => {
                 toast.info('Referral deleted');
                 setSelectedId(null);
+              },
+              onError: (error: Error) => {
+                const errorMessage = getErrorMessage(
+                  error,
+                  'Failed to delete referral. Please try again.'
+                );
+                toast.error(errorMessage);
               }
             });
           }

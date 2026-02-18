@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
 import {
   Body,
   Controller,
@@ -19,6 +18,19 @@ import { UpdateReferralDto } from './dto/update-referral.dto';
 import { multerOptions } from '../../config/multer.config';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import type { Request } from 'express';
+import { Referral } from './entities/referral.entity';
+
+interface MulterFile {
+  fieldname: string;
+  originalname: string;
+  encoding: string;
+  mimetype: string;
+  size: number;
+  destination: string;
+  filename: string;
+  path: string;
+  buffer: Buffer;
+}
 
 @Controller('referrals')
 export class ReferralsController {
@@ -27,7 +39,7 @@ export class ReferralsController {
   @Post()
   @UseInterceptors(FileInterceptor('avatar', multerOptions))
   async create(
-    @UploadedFile() file: any,
+    @UploadedFile() file: MulterFile | undefined,
     @Body() dto: CreateReferralDto,
     @Req() req: Request,
   ) {
@@ -43,7 +55,7 @@ export class ReferralsController {
   @UseInterceptors(FileInterceptor('avatar', multerOptions))
   async update(
     @Param('id') id: string,
-    @UploadedFile() file: any,
+    @UploadedFile() file: MulterFile | undefined,
     @Body() dto: UpdateReferralDto,
   ) {
     if (file) {
@@ -90,14 +102,14 @@ export class ReferralsController {
     return this.service.softDelete(id);
   }
 
-  private attachAvatarUrl(referral: any, req: Request): any {
+  private attachAvatarUrl(referral: Referral, req: Request): Referral {
     if (!referral?.avatarUrl) return referral;
 
     const baseUrl = `${req.protocol}://${req.get('host')}`;
 
     return {
       ...referral,
-      avatarUrl: `${baseUrl}${referral.avatarUrl}`,
+      avatarUrl: `${baseUrl}/${referral.avatarUrl}`,
     };
   }
 }

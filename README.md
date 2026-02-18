@@ -7,7 +7,7 @@ This application allows users to create, edit, preview, paginate, and manage ref
 
 ---
 
-# 🚀 Tech Stack
+# Tech Stack
 
 ## Frontend
 - React (Vite)
@@ -32,6 +32,7 @@ This application allows users to create, edit, preview, paginate, and manage ref
 
 # 📦 Project Structure
 
+```
 referral-builder/
   apps/
     api/        # NestJS backend
@@ -39,9 +40,10 @@ referral-builder/
   ARCHITECTURE.md
   README.md
 
+```
 ---
 
-# 🛠 Installation Guide
+# Installation Guide
 
 ## Prerequisites
 
@@ -51,11 +53,13 @@ referral-builder/
 
 ---
 
-# 🐳 Backend Setup
+# Backend Setup
 
+```
 cd apps/api
 cp .env.example .env
 docker compose up --build
+```
 
 Services started:
 
@@ -65,11 +69,13 @@ Services started:
 
 ---
 
-# 💻 Frontend Setup
+# Frontend Setup
 
+```
 cd apps/web
 npm install
 npm run dev
+```
 
 Frontend runs at:
 
@@ -77,21 +83,21 @@ http://localhost:5173
 
 ---
 
-# 🧪 Running Tests
+# Running Tests
 
 ## Backend
-
+```
 cd apps/api
 npm run test
-
+```
 ## Frontend
-
+```
 cd apps/web
 npm run test
-
+```
 ---
 
-# ✨ Features Implemented
+# Features Implemented
 
 ## Referral Form
 - Live preview while typing
@@ -119,16 +125,12 @@ npm run test
 
 ---
 
-# 🏗 Architecture Overview
+# Architecture Overview
 
 High-level system flow:
-
-React Frontend
-      ↓ (REST)
-NestJS Backend
-      ↓
-MySQL (Dockerized)
-
+```
+React Frontend -> (REST) NestJS Backend -> MySQL (Dockerized)
+```
 ## Backend Design
 - Controller layer handles requests
 - Service layer contains business logic
@@ -150,14 +152,14 @@ Avatar handling strategy:
 
 ---
 
-# 🔐 Soft Delete
+# Soft Delete
 
 Referrals are soft deleted using TypeORM’s soft delete functionality.
 Deleted records are excluded from normal queries.
 
 ---
 
-# 📱 Responsiveness
+# Responsiveness
 
 - Mobile-first form layout
 - Responsive table
@@ -166,7 +168,7 @@ Deleted records are excluded from normal queries.
 
 ---
 
-# 🧠 Key Technical Decisions
+# Key Technical Decisions
 
 - Server-side pagination for scalability
 - Explicit file lifecycle management
@@ -177,7 +179,7 @@ Deleted records are excluded from normal queries.
 
 ---
 
-# 📌 Notes
+# Notes
 
 - Avatar files are stored locally in /uploads
 - Only backend constructs avatarUrl
@@ -186,6 +188,6 @@ Deleted records are excluded from normal queries.
 
 ---
 
-# 👨‍💻 Author
+# Author
 
 Jerson Conmigo

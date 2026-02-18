@@ -8,6 +8,7 @@ import FormInput from './FormInput';
 import Button from '../ui/Button';
 import FileUpload from '../ui/FileUpload';
 import { toast } from 'sonner';
+import { getErrorMessage } from '@/lib/error-handler';
 
 interface Props {
   onChange?: (values: ReferralType | undefined) => void;
@@ -80,8 +81,9 @@ const ReferralForm = ({ onChange, defaultValues, onSubmit, isSubmitting }: Props
         reset({ ...blankValues, avatar: undefined });
         onChange?.(undefined);
       },
-      onError: () => {
-        toast.error('Failed to create referral. Please try again.');
+      onError: (error: Error) => {
+        const errorMessage = getErrorMessage(error, 'Failed to create referral. Please try again.');
+        toast.error(errorMessage);
       }
     });
   };

@@ -23,12 +23,14 @@ export class ReferralsService {
         avatarUrl: dto.avatarUrl ?? undefined,
       });
       return this.repo.save(referral);
-    } catch (error: any) {
-      if (
-        error instanceof QueryFailedError &&
-        error.driverError?.code === 'ER_DUP_ENTRY'
-      ) {
-        throw new ConflictException('Email already exists');
+    } catch (error) {
+      if (error instanceof QueryFailedError) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
+        const driverError = (error as any).driverError;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        if (driverError?.code === 'ER_DUP_ENTRY') {
+          throw new ConflictException('Email already exists');
+        }
       }
 
       throw error;

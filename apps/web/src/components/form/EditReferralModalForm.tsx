@@ -3,6 +3,7 @@ import ReferralForm from './ReferralForm';
 import { type ReferralType } from '@/features/referrals/schema';
 import { useUpdateReferral } from '@/features/referrals/hooks/useUpdateReferral';
 import { toast } from 'sonner';
+import { getErrorMessage } from '@/lib/error-handler';
 
 interface Props {
   open: boolean;
@@ -28,8 +29,12 @@ const EditReferralFormModal = ({ open, onClose, referral }: Props) => {
           toast.success('Referral updated successfully!');
           onClose();
         },
-        onError: () => {
-          toast.error('Failed to update referral. Please try again.');
+        onError: (error: Error) => {
+          const errorMessage = getErrorMessage(
+            error,
+            'Failed to update referral. Please try again.'
+          );
+          toast.error(errorMessage);
         }
       }
     );
